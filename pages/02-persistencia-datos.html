@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#04060d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tutorial Móvil">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" type="image/png" href="../icons/icon-192.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<title>Persistencia y acceso a datos · Tutorial Desarrollo Móvil</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')==='light'?'light':'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="icon-btn" id="menuBtn" aria-label="Abrir menú">&#9776;</button>
+  <a class="brand" href="../index.html"><span class="logo-mark" aria-hidden="true"></span><span class="brand-text">Tutorial <span>Desarrollo Móvil</span></span></a>
+  <span class="status-chip" id="netChip">Sistema en línea</span>
+  <button class="icon-btn" id="installBtn" hidden>Instalar</button>
+  <button class="icon-btn" id="themeBtn" aria-label="Cambiar entre modo oscuro y claro">Tema</button>
+</header>
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <h3>Módulos</h3>
+    <a href="../index.html">Inicio</a>
+    
+    <a href="01-control-versiones.html">1. Control de versiones</a>
+    <a href="02-persistencia-datos.html" class="active">2. Persistencia y acceso a datos</a>
+    <a href="03-sensores.html">3. Gestión de sensores</a>
+    <a href="04-multimedia.html">4. Recursos multimedia</a>
+    <a href="05-servicios-notificaciones.html">5. Servicios y notificaciones</a>
+    <a href="06-librerias-toolkits.html">6. Librerías y toolkits</a>
+    <a href="07-depuracion-seguridad.html">7. Depuración y seguridad</a>
+    <a href="08-referencias.html">Referencias</a>
+  </nav>
+  <main class="content">
+    <div class="kicker">MÓDULO 02 / 07</div>
+    <h1>Persistencia y acceso a datos</h1>
+    <p class="lead">Cómo conservan y consultan información las apps móviles: archivos, bases de datos locales y remotas.</p>
+    
+<h2>2.1 Definición</h2>
+<div class="card">
+<p><strong>Persistencia de datos</strong> es la capacidad de una aplicación de conservar su información más allá del ciclo de vida de la ejecución: los datos siguen existiendo aunque la app se cierre, el sistema la elimine de memoria o el dispositivo se reinicie. <strong>Acceso a datos</strong> es el conjunto de mecanismos (APIs, clases, bibliotecas) con los que la app lee, escribe, actualiza y elimina esa información.</p>
+</div>
+
+<h2>2.2 Características</h2>
+<div class="grid">
+<div class="card"><h3>Durabilidad</h3><p>La información sobrevive al cierre de la app y al reinicio.</p></div>
+<div class="card"><h3>Integridad y consistencia</h3><p>Los datos se mantienen válidos (transacciones, restricciones).</p></div>
+<div class="card"><h3>Seguridad</h3><p>Control de acceso, aislamiento por app y cifrado.</p></div>
+<div class="card"><h3>Rendimiento</h3><p>Acceso rápido; operaciones pesadas fuera del hilo principal.</p></div>
+<div class="card"><h3>Sincronización</h3><p>Posibilidad de mantener coherencia entre dispositivo y nube.</p></div>
+<div class="card"><h3>Disponibilidad offline</h3><p>La app funciona sin conexión usando datos locales.</p></div>
+</div>
+
+<h2>2.3 Formas de persistencia en dispositivos móviles</h2>
+<div class="tabs">
+  <button class="tab-btn active" data-target="t-files">Archivos</button>
+  <button class="tab-btn" data-target="t-local">BD locales</button>
+  <button class="tab-btn" data-target="t-remote">BD remotas (servicios web)</button>
+</div>
+<div>
+<div class="tab-panel active" id="t-files">
+  <h3>A) Archivos</h3>
+  <p>Se guardan datos en el sistema de archivos del dispositivo.</p>
+  <ul>
+    <li><strong>SharedPreferences / DataStore</strong>: pares clave-valor para configuraciones simples (tema, idioma, token). En iOS: <code>UserDefaults</code>.</li>
+    <li><strong>Almacenamiento interno</strong>: privado de la app, se borra al desinstalar.</li>
+    <li><strong>Almacenamiento externo / compartido</strong>: fotos, documentos, descargas (MediaStore, Storage Access Framework).</li>
+    <li><strong>Caché</strong>: datos temporales que el sistema puede eliminar.</li>
+  </ul>
+  <ul class="pros"><li>Muy simple de usar.</li><li>Ideal para datos pequeños o archivos binarios.</li></ul>
+  <ul class="cons"><li>Sin consultas ni relaciones.</li><li>Difícil mantener integridad con datos complejos.</li></ul>
+</div>
+<div class="tab-panel" id="t-local">
+  <h3>B) Bases de datos locales</h3>
+  <p>Almacenan datos estructurados dentro del dispositivo. La más común es <strong>SQLite</strong> (relacional, embebida, sin servidor). Alternativas: <strong>Room</strong> (capa sobre SQLite), Realm, ObjectBox, Core Data (iOS).</p>
+  <ul class="pros"><li>Consultas SQL, relaciones, transacciones.</li><li>Funciona sin internet y es rápida.</li></ul>
+  <ul class="cons"><li>Los datos quedan solo en ese dispositivo.</li><li>Requiere diseñar esquemas y migraciones.</li></ul>
+</div>
+<div class="tab-panel" id="t-remote">
+  <h3>C) Bases de datos remotas mediante servicios web</h3>
+  <p>La app se comunica con un servidor (API REST/GraphQL) por HTTP(S) que guarda la información en una BD en la nube (MySQL, PostgreSQL, MongoDB, Firebase Firestore, Supabase). Los datos suelen viajar en formato <strong>JSON</strong>.</p>
+  <ul class="pros"><li>Datos compartidos entre dispositivos y usuarios.</li><li>Respaldo centralizado y escalable.</li></ul>
+  <ul class="cons"><li>Requiere conexión y manejo de latencia/errores.</li><li>Necesita autenticación y seguridad del servidor.</li></ul>
+</div>
+</div>
+
+<h2>2.4 Tipos de datos almacenables según la forma de persistencia</h2>
+<div class="table-wrap"><table>
+<tr><th>Forma de persistencia</th><th>Tipos de datos</th><th>Ejemplos</th></tr>
+<tr><td>Preferencias (clave-valor)</td><td>Booleanos, enteros, flotantes, cadenas, conjuntos de cadenas</td><td>Modo oscuro, idioma, último usuario</td></tr>
+<tr><td>Archivos internos/externos</td><td>Texto, JSON, XML, imágenes, audio, video, PDF, binarios</td><td>Foto de perfil, archivo de configuración, descargas</td></tr>
+<tr><td>SQLite / Room</td><td>INTEGER, REAL, TEXT, BLOB, NULL (y fechas como texto/entero)</td><td>Contactos, productos, tareas, historial</td></tr>
+<tr><td>BD remota por servicio web</td><td>Documentos JSON, registros relacionales, archivos (storage)</td><td>Usuarios, pedidos, mensajes, publicaciones</td></tr>
+</table></div>
+
+<h2>2.5 Mecanismos de control de acceso a medios persistentes</h2>
+<h3>Biblioteca de clases</h3>
+<p>Son librerías que abstraen el acceso a datos para no escribir todo a bajo nivel: <strong>Room</strong>, <strong>Jetpack DataStore</strong>, <strong>Retrofit</strong> (servicios web), <strong>Realm</strong>. Reducen código repetitivo y errores.</p>
+
+<h3>Clases de SQLite en Android</h3>
+<ul>
+<li><code>SQLiteOpenHelper</code>: crea la BD y gestiona versiones (<code>onCreate</code>, <code>onUpgrade</code>).</li>
+<li><code>SQLiteDatabase</code>: ejecuta <code>insert</code>, <code>query</code>, <code>update</code>, <code>delete</code> y SQL directo.</li>
+<li><code>ContentValues</code>: pares columna-valor para insertar/actualizar.</li>
+<li><code>Cursor</code>: recorre el resultado de una consulta.</li>
+</ul>
+<div class="code-wrap"><pre><code class="kotlin">class DbHelper(ctx: Context) : SQLiteOpenHelper(ctx, "tareas.db", null, 1) {
+    override fun onCreate(db: SQLiteDatabase) {
+        db.execSQL("CREATE TABLE tarea(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT NOT NULL, hecha INTEGER DEFAULT 0)")
+    }
+    override fun onUpgrade(db: SQLiteDatabase, old: Int, new: Int) {
+        db.execSQL("DROP TABLE IF EXISTS tarea"); onCreate(db)
+    }
+}
+
+// Insertar
+val db = DbHelper(this).writableDatabase
+val valores = ContentValues().apply { put("titulo", "Estudiar SQLite") }
+db.insert("tarea", null, valores)
+
+// Consultar
+val c = db.query("tarea", null, null, null, null, null, "id DESC")
+while (c.moveToNext()) {
+    val titulo = c.getString(c.getColumnIndexOrThrow("titulo"))
+}
+c.close()</code></pre></div>
+
+<h3>Mapeo relacional de objetos (ORM)</h3>
+<p>Un <strong>ORM</strong> convierte filas de tablas en objetos del lenguaje y viceversa, evitando escribir SQL manual para cada operación. En Android el estándar es <strong>Room</strong>; en iOS, <strong>Core Data</strong> / SwiftData; otras opciones: GreenDAO, Realm.</p>
+<div class="code-wrap"><pre><code class="kotlin">@Entity(tableName = "tarea")
+data class Tarea(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val titulo: String,
+    val hecha: Boolean = false
+)
+
+@Dao
+interface TareaDao {
+    @Insert suspend fun insertar(t: Tarea)
+    @Query("SELECT * FROM tarea ORDER BY id DESC") fun todas(): Flow&lt;List&lt;Tarea&gt;&gt;
+    @Delete suspend fun borrar(t: Tarea)
+}
+
+@Database(entities = [Tarea::class], version = 1)
+abstract class AppDb : RoomDatabase() { abstract fun tareaDao(): TareaDao }
+
+val db = Room.databaseBuilder(applicationContext, AppDb::class.java, "tareas.db").build()</code></pre></div>
+
+<h2>2.6 Autenticación y consumo de servicios web</h2>
+<div class="card"><ol>
+<li><strong>Registro / inicio de sesión</strong>: el usuario envía credenciales por HTTPS (o usa Google, Apple, Firebase Auth).</li>
+<li>El servidor valida y devuelve un <strong>token</strong> (JWT u OAuth 2.0 access token).</li>
+<li>La app guarda el token de forma segura (EncryptedSharedPreferences / Keystore / Keychain).</li>
+<li>En cada petición, envía el token en el encabezado <code>Authorization: Bearer &lt;token&gt;</code>.</li>
+<li>El servidor responde con JSON; la app lo <strong>deserializa</strong> (Gson, Moshi, kotlinx.serialization).</li>
+<li>Si el token expira (401), se renueva con un <em>refresh token</em> o se pide iniciar sesión otra vez.</li>
+</ol></div>
+<div class="code-wrap"><pre><code class="kotlin">interface ApiService {
+    @POST("login") suspend fun login(@Body cred: Credenciales): TokenResp
+    @GET("tareas") suspend fun tareas(@Header("Authorization") auth: String): List&lt;Tarea&gt;
+}
+
+val retrofit = Retrofit.Builder()
+    .baseUrl("https://api.ejemplo.com/")
+    .addConverterFactory(GsonConverterFactory.create())
+    .build()
+val api = retrofit.create(ApiService::class.java)
+
+// En una corrutina:
+val token = api.login(Credenciales("ana@mail.com", "secreto")).token
+val lista = api.tareas("Bearer $token")</code></pre></div>
+<div class="note warn"><strong>Buena práctica:</strong> usa siempre HTTPS, nunca guardes contraseñas en texto plano y ejecuta las llamadas de red fuera del hilo principal.</div>
+
+<h2>2.7 Enlaces y videos recomendados</h2>
+<div class="resources"><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/training/data-storage"><span class="ico">↗</span><span><strong>Almacenamiento de datos en Android</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/training/data-storage/room"><span class="ico">↗</span><span><strong>Guía de Room (ORM)</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/training/data-storage/sqlite"><span class="ico">↗</span><span><strong>SQLite en Android</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/topic/libraries/architecture/datastore"><span class="ico">↗</span><span><strong>Jetpack DataStore</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://square.github.io/retrofit/"><span class="ico">↗</span><span><strong>Retrofit (consumo de APIs REST)</strong><small>square.github.io</small></span></a><a class="res" target="_blank" rel="noopener" href="https://firebase.google.com/docs/auth"><span class="ico">↗</span><span><strong>Firebase Authentication</strong><small>firebase.google.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://www.sqlite.org/docs.html"><span class="ico">↗</span><span><strong>Documentación de SQLite</strong><small>sqlite.org</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=android+room+database+tutorial+kotlin+espa%C3%B1ol"><span class="ico">▶</span><span><strong>Room Database en Android (Kotlin)</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=sqlite+android+studio+crud+tutorial+espa%C3%B1ol"><span class="ico">▶</span><span><strong>CRUD con SQLite en Android</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=retrofit+consumir+api+rest+android+kotlin"><span class="ico">▶</span><span><strong>Consumir API REST con Retrofit</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=firebase+authentication+android+tutorial+espa%C3%B1ol"><span class="ico">▶</span><span><strong>Autenticación con Firebase</strong><small>Buscar en YouTube</small></span></a></div>
+
+    <div class="pager"><a href="01-control-versiones.html">← 1. Control de versiones</a><a href="03-sensores.html">3. Gestión de sensores →</a></div>
+  </main>
+</div>
+<footer>Actividad 12/11/2026 · Tutorial de desarrollo de aplicaciones móviles</footer>
+<button id="toTop" aria-label="Volver arriba">↑</button>
+<script src="../js/main.js"></script>
+</body>
+</html>

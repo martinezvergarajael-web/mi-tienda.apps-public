@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#04060d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tutorial Móvil">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" type="image/png" href="../icons/icon-192.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<title>Librerías y toolkits para desarrollo móvil · Tutorial Desarrollo Móvil</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')==='light'?'light':'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="icon-btn" id="menuBtn" aria-label="Abrir menú">&#9776;</button>
+  <a class="brand" href="../index.html"><span class="logo-mark" aria-hidden="true"></span><span class="brand-text">Tutorial <span>Desarrollo Móvil</span></span></a>
+  <span class="status-chip" id="netChip">Sistema en línea</span>
+  <button class="icon-btn" id="installBtn" hidden>Instalar</button>
+  <button class="icon-btn" id="themeBtn" aria-label="Cambiar entre modo oscuro y claro">Tema</button>
+</header>
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <h3>Módulos</h3>
+    <a href="../index.html">Inicio</a>
+    
+    <a href="01-control-versiones.html">1. Control de versiones</a>
+    <a href="02-persistencia-datos.html">2. Persistencia y acceso a datos</a>
+    <a href="03-sensores.html">3. Gestión de sensores</a>
+    <a href="04-multimedia.html">4. Recursos multimedia</a>
+    <a href="05-servicios-notificaciones.html">5. Servicios y notificaciones</a>
+    <a href="06-librerias-toolkits.html" class="active">6. Librerías y toolkits</a>
+    <a href="07-depuracion-seguridad.html">7. Depuración y seguridad</a>
+    <a href="08-referencias.html">Referencias</a>
+  </nav>
+  <main class="content">
+    <div class="kicker">MÓDULO 06 / 07</div>
+    <h1>Librerías y toolkits para desarrollo móvil</h1>
+    <p class="lead">Diferencia entre librería y toolkit, librerías especializadas y toolkits para crear apps móviles.</p>
+    
+<h2>6.1 ¿Qué es una librería y qué es un toolkit?</h2>
+<div class="grid">
+<div class="card"><h3>Librería (library)</h3>
+<p>Conjunto de funciones, clases y utilidades <strong>reutilizables</strong> que resuelven una tarea concreta (peticiones HTTP, cargar imágenes, parsear JSON). <strong>Tu código la llama</strong> cuando la necesita y tú controlas el flujo de la aplicación.</p>
+<p><em>Ejemplos:</em> Retrofit, Gson, Glide, Room.</p></div>
+<div class="card"><h3>Toolkit</h3>
+<p>Conjunto <strong>más amplio e integrado</strong> de herramientas, componentes de interfaz, APIs y utilidades para construir aplicaciones completas en una plataforma. Suele incluir widgets, compilador, emulador y herramientas de depuración.</p>
+<p><em>Ejemplos:</em> Android SDK + Jetpack, Jetpack Compose, SwiftUI/UIKit, Flutter, React Native, .NET MAUI.</p></div>
+</div>
+<div class="note"><strong>Diferencia clave:</strong> una librería es una pieza que usas; un toolkit es una caja de herramientas completa. Un <em>framework</em> además define la estructura y es quien llama a tu código (inversión de control).</div>
+
+<h2>6.2 Librerías de funciones especializadas para apps móviles</h2>
+<div class="table-wrap"><table>
+<tr><th>Categoría</th><th>Librería</th><th>Para qué sirve</th></tr>
+<tr><td>Red / APIs</td><td>Retrofit, OkHttp, Ktor, Volley, Alamofire (iOS)</td><td>Consumir servicios web REST</td></tr>
+<tr><td>JSON</td><td>Gson, Moshi, kotlinx.serialization</td><td>Convertir JSON ↔ objetos</td></tr>
+<tr><td>Imágenes</td><td>Glide, Coil, Picasso, Kingfisher (iOS)</td><td>Cargar y cachear imágenes</td></tr>
+<tr><td>Bases de datos</td><td>Room, Realm, SQLDelight, Core Data</td><td>Persistencia local</td></tr>
+<tr><td>Inyección de dependencias</td><td>Hilt, Dagger, Koin</td><td>Gestionar dependencias</td></tr>
+<tr><td>Asincronía</td><td>Corrutinas de Kotlin, RxJava, Combine</td><td>Tareas en segundo plano y flujos</td></tr>
+<tr><td>Mapas y ubicación</td><td>Google Maps SDK, Fused Location, Mapbox</td><td>Mapas y GPS</td></tr>
+<tr><td>Gráficas</td><td>MPAndroidChart, Vico</td><td>Gráficos estadísticos</td></tr>
+<tr><td>Animaciones</td><td>Lottie</td><td>Animaciones vectoriales</td></tr>
+<tr><td>Cámara / Multimedia</td><td>CameraX, Media3 ExoPlayer</td><td>Captura y reproducción</td></tr>
+<tr><td>Pruebas</td><td>JUnit, Mockito, Espresso, MockK</td><td>Pruebas unitarias y de interfaz</td></tr>
+<tr><td>Registro y errores</td><td>Timber, Firebase Crashlytics</td><td>Logs y reportes de fallos</td></tr>
+<tr><td>Seguridad</td><td>Jetpack Security, BiometricPrompt</td><td>Cifrado y biometría</td></tr>
+</table></div>
+
+<h3>Ejemplo: agregar una librería con Gradle</h3>
+<div class="code-wrap"><pre><code class="kotlin">// app/build.gradle.kts
+dependencies {
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("androidx.room:room-runtime:2.6.1")
+}</code></pre></div>
+<p>Después de editar el archivo, se pulsa <strong>Sync Now</strong> en Android Studio. <em>(Verifica siempre la última versión en la documentación oficial de cada librería.)</em></p>
+
+<h2>6.3 Toolkits aplicables a la programación móvil</h2>
+<div class="table-wrap"><table>
+<tr><th>Toolkit</th><th>Lenguaje</th><th>Plataforma</th><th>Ventajas</th><th>Desventajas</th></tr>
+<tr><td><strong>Android SDK + Jetpack / Compose</strong></td><td>Kotlin, Java</td><td>Android (nativo)</td><td>Máximo rendimiento y acceso total a APIs</td><td>Solo Android</td></tr>
+<tr><td><strong>iOS SDK (UIKit / SwiftUI)</strong></td><td>Swift, Obj-C</td><td>iOS (nativo)</td><td>Experiencia nativa de Apple</td><td>Solo iOS, requiere Mac</td></tr>
+<tr><td><strong>Flutter</strong></td><td>Dart</td><td>Android, iOS, web, escritorio</td><td>Una sola base de código, UI muy personalizable, hot reload</td><td>Apps más pesadas; lenguaje menos común</td></tr>
+<tr><td><strong>React Native</strong></td><td>JavaScript / TypeScript</td><td>Android, iOS</td><td>Reutiliza conocimientos web/React, gran comunidad</td><td>Puentes nativos para funciones avanzadas</td></tr>
+<tr><td><strong>.NET MAUI (Xamarin)</strong></td><td>C#</td><td>Android, iOS, Windows, macOS</td><td>Integración con ecosistema Microsoft</td><td>Comunidad menor</td></tr>
+<tr><td><strong>Kotlin Multiplatform</strong></td><td>Kotlin</td><td>Android, iOS</td><td>Comparte la lógica y mantiene UI nativa</td><td>Ecosistema en crecimiento</td></tr>
+<tr><td><strong>Ionic / Capacitor</strong></td><td>HTML, CSS, JS</td><td>Híbrido (WebView)</td><td>Fácil para desarrolladores web</td><td>Menor rendimiento que nativo</td></tr>
+</table></div>
+<div class="card"><h3>¿Cuál elegir?</h3>
+<ul><li><strong>Máximo rendimiento / hardware</strong> → nativo (Android o iOS).</li><li><strong>Una sola base de código</strong> → Flutter o React Native.</li><li><strong>Equipo con experiencia web</strong> → React Native o Ionic.</li><li><strong>Compartir lógica manteniendo UI nativa</strong> → Kotlin Multiplatform.</li></ul></div>
+
+<h3>Ejemplo mínimo en Flutter</h3>
+<div class="code-wrap"><pre><code class="dart">import 'package:flutter/material.dart';
+
+void main() =&gt; runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) =&gt; MaterialApp(
+    home: Scaffold(
+      appBar: AppBar(title: const Text('Hola móvil')),
+      body: const Center(child: Text('¡Mi primera app!')),
+    ),
+  );
+}</code></pre></div>
+
+<h2>6.4 Enlaces y videos recomendados</h2>
+<div class="resources"><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/jetpack"><span class="ico">↗</span><span><strong>Android Jetpack</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/compose"><span class="ico">↗</span><span><strong>Jetpack Compose</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://flutter.dev/"><span class="ico">↗</span><span><strong>Flutter</strong><small>flutter.dev</small></span></a><a class="res" target="_blank" rel="noopener" href="https://reactnative.dev/"><span class="ico">↗</span><span><strong>React Native</strong><small>reactnative.dev</small></span></a><a class="res" target="_blank" rel="noopener" href="https://learn.microsoft.com/dotnet/maui/"><span class="ico">↗</span><span><strong>.NET MAUI</strong><small>learn.microsoft.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://www.jetbrains.com/kotlin-multiplatform/"><span class="ico">↗</span><span><strong>Kotlin Multiplatform</strong><small>jetbrains.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.apple.com/xcode/swiftui/"><span class="ico">↗</span><span><strong>SwiftUI</strong><small>developer.apple.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://square.github.io/okhttp/"><span class="ico">↗</span><span><strong>OkHttp</strong><small>square.github.io</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=flutter+vs+react+native+vs+kotlin+diferencias"><span class="ico">▶</span><span><strong>Flutter vs React Native vs Nativo</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=jetpack+compose+tutorial+espa%C3%B1ol+desde+cero"><span class="ico">▶</span><span><strong>Jetpack Compose desde cero</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=flutter+curso+completo+espa%C3%B1ol"><span class="ico">▶</span><span><strong>Curso de Flutter</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=qu%C3%A9+es+una+librer%C3%ADa+framework+toolkit+diferencia"><span class="ico">▶</span><span><strong>Librería vs framework vs toolkit</strong><small>Buscar en YouTube</small></span></a></div>
+
+    <div class="pager"><a href="05-servicios-notificaciones.html">← 5. Servicios y notificaciones</a><a href="07-depuracion-seguridad.html">7. Depuración y seguridad →</a></div>
+  </main>
+</div>
+<footer>Actividad 12/11/2026 · Tutorial de desarrollo de aplicaciones móviles</footer>
+<button id="toTop" aria-label="Volver arriba">↑</button>
+<script src="../js/main.js"></script>
+</body>
+</html>

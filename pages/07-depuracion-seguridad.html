@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#04060d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tutorial Móvil">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" type="image/png" href="../icons/icon-192.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<title>Depuración y seguridad · Tutorial Desarrollo Móvil</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')==='light'?'light':'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="icon-btn" id="menuBtn" aria-label="Abrir menú">&#9776;</button>
+  <a class="brand" href="../index.html"><span class="logo-mark" aria-hidden="true"></span><span class="brand-text">Tutorial <span>Desarrollo Móvil</span></span></a>
+  <span class="status-chip" id="netChip">Sistema en línea</span>
+  <button class="icon-btn" id="installBtn" hidden>Instalar</button>
+  <button class="icon-btn" id="themeBtn" aria-label="Cambiar entre modo oscuro y claro">Tema</button>
+</header>
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <h3>Módulos</h3>
+    <a href="../index.html">Inicio</a>
+    
+    <a href="01-control-versiones.html">1. Control de versiones</a>
+    <a href="02-persistencia-datos.html">2. Persistencia y acceso a datos</a>
+    <a href="03-sensores.html">3. Gestión de sensores</a>
+    <a href="04-multimedia.html">4. Recursos multimedia</a>
+    <a href="05-servicios-notificaciones.html">5. Servicios y notificaciones</a>
+    <a href="06-librerias-toolkits.html">6. Librerías y toolkits</a>
+    <a href="07-depuracion-seguridad.html" class="active">7. Depuración y seguridad</a>
+    <a href="08-referencias.html">Referencias</a>
+  </nav>
+  <main class="content">
+    <div class="kicker">MÓDULO 07 / 07</div>
+    <h1>Depuración y seguridad</h1>
+    <p class="lead">Cómo encontrar y corregir errores, qué herramientas ofrece el IDE y cómo proteger la app y sus datos.</p>
+    
+<h2>7.1 ¿Qué es la depuración y la seguridad?</h2>
+<div class="grid">
+<div class="card"><h3>Depuración (debugging)</h3>
+<p>Proceso de <strong>encontrar, analizar y corregir errores</strong> (bugs) en el código. Se observa el programa mientras se ejecuta: valores de variables, flujo de ejecución, uso de memoria y red, hasta identificar la causa del fallo.</p></div>
+<div class="card"><h3>Seguridad</h3>
+<p>Conjunto de prácticas que protegen la app, los datos del usuario y la comunicación contra accesos no autorizados, filtración o manipulación. Se apoya en los principios de <strong>confidencialidad, integridad y disponibilidad</strong>.</p></div>
+</div>
+
+<h2>7.2 Herramientas de depuración en el entorno de desarrollo móvil</h2>
+<div class="table-wrap"><table>
+<tr><th>Herramienta</th><th>Qué permite</th></tr>
+<tr><td><strong>Debugger de Android Studio</strong></td><td>Puntos de interrupción (<em>breakpoints</em>), ejecución paso a paso (Step Over/Into/Out), inspección y evaluación de variables</td></tr>
+<tr><td><strong>Logcat</strong> (<code>Log.d</code>, <code>Log.e</code>)</td><td>Ver mensajes y errores del sistema y de la app, con filtros por nivel y etiqueta</td></tr>
+<tr><td><strong>Android Profiler</strong></td><td>Medir CPU, memoria, red y energía</td></tr>
+<tr><td><strong>Layout Inspector</strong></td><td>Revisar la jerarquía de vistas en ejecución</td></tr>
+<tr><td><strong>Database Inspector</strong></td><td>Consultar y editar bases SQLite/Room mientras corre la app</td></tr>
+<tr><td><strong>Network Inspector</strong></td><td>Revisar peticiones y respuestas HTTP</td></tr>
+<tr><td><strong>App Inspection / WorkManager Inspector</strong></td><td>Ver tareas en segundo plano</td></tr>
+<tr><td><strong>Emulador (AVD) y dispositivo real con ADB</strong></td><td>Probar la app y depurar vía USB/Wi-Fi (<code>adb logcat</code>, <code>adb shell</code>)</td></tr>
+<tr><td><strong>Lint y análisis estático</strong></td><td>Detectar problemas de calidad, rendimiento y seguridad antes de ejecutar</td></tr>
+<tr><td><strong>Firebase Crashlytics</strong></td><td>Reportes de fallos en usuarios reales</td></tr>
+<tr><td><strong>Xcode</strong> (iOS)</td><td>Debugger LLDB, Instruments, View Debugger, Console</td></tr>
+<tr><td><strong>Flutter DevTools / React Native DevTools</strong></td><td>Depuración y perfilado en esos toolkits</td></tr>
+</table></div>
+
+<h3>Ejemplo: uso de Logcat</h3>
+<div class="code-wrap"><pre><code class="kotlin">Log.v("MiApp", "Mensaje detallado")
+Log.d("MiApp", "Depuración: valor x = $x")
+Log.i("MiApp", "Información")
+Log.w("MiApp", "Advertencia")
+Log.e("MiApp", "Error al guardar", excepcion)</code></pre></div>
+
+<h3>Pasos para depurar con breakpoints</h3>
+<ol>
+<li>Haz clic en el margen izquierdo de una línea para poner un <em>breakpoint</em>.</li>
+<li>Pulsa <strong>Debug</strong> (ícono del insecto) en lugar de Run.</li>
+<li>Cuando la ejecución se detenga, revisa las variables en el panel <em>Variables</em>.</li>
+<li>Avanza con <strong>Step Over (F8)</strong> o entra a una función con <strong>Step Into (F7)</strong>.</li>
+<li>Corrige el código y vuelve a ejecutar.</li>
+</ol>
+
+<h2>7.3 Seguridad en aplicaciones móviles</h2>
+<div class="grid">
+<div class="card"><h3>Datos locales</h3><ul><li>Cifrar información sensible (Jetpack Security, SQLCipher).</li><li>Guardar tokens en Android Keystore / iOS Keychain.</li><li>No guardar contraseñas en texto plano.</li></ul></div>
+<div class="card"><h3>Comunicación</h3><ul><li>Usar siempre HTTPS/TLS.</li><li>Certificate pinning.</li><li>Validar respuestas del servidor.</li></ul></div>
+<div class="card"><h3>Autenticación</h3><ul><li>OAuth 2.0 / JWT con expiración.</li><li>Biometría (BiometricPrompt).</li><li>Autenticación multifactor.</li></ul></div>
+<div class="card"><h3>Código</h3><ul><li>Ofuscar y reducir con R8/ProGuard.</li><li>No incluir claves de API en el código ni en Git.</li><li>Validar entradas del usuario (evitar inyección SQL).</li></ul></div>
+<div class="card"><h3>Permisos</h3><ul><li>Principio de mínimo privilegio.</li><li>Pedir permisos solo cuando se necesiten.</li><li>Marcar componentes con <code>exported="false"</code>.</li></ul></div>
+<div class="card"><h3>Distribución</h3><ul><li>Firmar la app con llave protegida.</li><li>Actualizar dependencias con vulnerabilidades.</li><li>Seguir OWASP MASVS.</li></ul></div>
+</div>
+
+<h3>Ejemplo: consulta segura contra inyección SQL</h3>
+<div class="code-wrap"><pre><code class="kotlin">// [X] Inseguro
+db.rawQuery("SELECT * FROM usuario WHERE nombre = '" + entrada + "'", null)
+
+// [OK] Seguro: parámetros enlazados
+db.rawQuery("SELECT * FROM usuario WHERE nombre = ?", arrayOf(entrada))</code></pre></div>
+
+<h3>Ejemplo: guardar datos cifrados</h3>
+<div class="code-wrap"><pre><code class="kotlin">val masterKey = MasterKey.Builder(context)
+    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build()
+
+val prefs = EncryptedSharedPreferences.create(
+    context, "secretos", masterKey,
+    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM)
+
+prefs.edit().putString("token", "abc123").apply()</code></pre></div>
+
+<h2>7.4 Enlaces y videos recomendados</h2>
+<div class="resources"><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/studio/debug"><span class="ico">↗</span><span><strong>Depurar tu app</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/studio/debug/logcat"><span class="ico">↗</span><span><strong>Logcat</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/studio/profile"><span class="ico">↗</span><span><strong>Android Profiler</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/privacy-and-security/security-tips"><span class="ico">↗</span><span><strong>Consejos de seguridad en Android</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/studio/debug/app-inspector"><span class="ico">↗</span><span><strong>App Inspection</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://mas.owasp.org/MASVS/"><span class="ico">↗</span><span><strong>OWASP MASVS (seguridad móvil)</strong><small>owasp.org</small></span></a><a class="res" target="_blank" rel="noopener" href="https://firebase.google.com/docs/crashlytics"><span class="ico">↗</span><span><strong>Firebase Crashlytics</strong><small>firebase.google.com</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=depurar+android+studio+breakpoints+logcat+tutorial+espa%C3%B1ol"><span class="ico">▶</span><span><strong>Depurar en Android Studio</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=android+profiler+memoria+cpu+tutorial"><span class="ico">▶</span><span><strong>Android Profiler</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=seguridad+apps+m%C3%B3viles+owasp+mobile+top+10+espa%C3%B1ol"><span class="ico">▶</span><span><strong>Seguridad en apps móviles (OWASP)</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=encryptedsharedpreferences+keystore+android+tutorial"><span class="ico">▶</span><span><strong>Cifrado y Keystore en Android</strong><small>Buscar en YouTube</small></span></a></div>
+
+    <div class="pager"><a href="06-librerias-toolkits.html">← 6. Librerías y toolkits</a><a href="08-referencias.html">Referencias →</a></div>
+  </main>
+</div>
+<footer>Actividad 12/11/2026 · Tutorial de desarrollo de aplicaciones móviles</footer>
+<button id="toTop" aria-label="Volver arriba">↑</button>
+<script src="../js/main.js"></script>
+</body>
+</html>

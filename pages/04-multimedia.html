@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#04060d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tutorial Móvil">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" type="image/png" href="../icons/icon-192.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<title>Uso de recursos multimedia · Tutorial Desarrollo Móvil</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')==='light'?'light':'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="icon-btn" id="menuBtn" aria-label="Abrir menú">&#9776;</button>
+  <a class="brand" href="../index.html"><span class="logo-mark" aria-hidden="true"></span><span class="brand-text">Tutorial <span>Desarrollo Móvil</span></span></a>
+  <span class="status-chip" id="netChip">Sistema en línea</span>
+  <button class="icon-btn" id="installBtn" hidden>Instalar</button>
+  <button class="icon-btn" id="themeBtn" aria-label="Cambiar entre modo oscuro y claro">Tema</button>
+</header>
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <h3>Módulos</h3>
+    <a href="../index.html">Inicio</a>
+    
+    <a href="01-control-versiones.html">1. Control de versiones</a>
+    <a href="02-persistencia-datos.html">2. Persistencia y acceso a datos</a>
+    <a href="03-sensores.html">3. Gestión de sensores</a>
+    <a href="04-multimedia.html" class="active">4. Recursos multimedia</a>
+    <a href="05-servicios-notificaciones.html">5. Servicios y notificaciones</a>
+    <a href="06-librerias-toolkits.html">6. Librerías y toolkits</a>
+    <a href="07-depuracion-seguridad.html">7. Depuración y seguridad</a>
+    <a href="08-referencias.html">Referencias</a>
+  </nav>
+  <main class="content">
+    <div class="kicker">MÓDULO 04 / 07</div>
+    <h1>Uso de recursos multimedia</h1>
+    <p class="lead">Imágenes, audio, video y animaciones: tipos, dónde se almacenan en el proyecto y qué componentes los usan.</p>
+    
+<h2>4.1 Definición</h2>
+<div class="card">
+<p>Los <strong>recursos multimedia</strong> son los elementos audiovisuales y gráficos que enriquecen una aplicación: imágenes, audio, video, animaciones e íconos. En programación móvil se gestionan como <em>recursos</em> empaquetados con la app (dentro del proyecto) o descargados desde la red, y se reproducen o muestran mediante componentes del sistema.</p>
+</div>
+
+<h2>4.2 Tipos de recursos multimedia</h2>
+<div class="grid">
+<div class="card"><h3>Imágenes</h3><p>Formatos: PNG, JPG, WebP, GIF, SVG (como <em>VectorDrawable</em> en Android). Se muestran con <code>ImageView</code> o <code>Image</code> (Compose). Conviene proveer varias densidades (mdpi…xxxhdpi).</p></div>
+<div class="card"><h3>Audio</h3><p>Formatos: MP3, AAC, OGG, WAV. Efectos cortos con <code>SoundPool</code>; música o podcasts con <code>MediaPlayer</code> / <code>ExoPlayer</code>. Grabación con <code>MediaRecorder</code>.</p></div>
+<div class="card"><h3>Video</h3><p>Formatos: MP4 (H.264/H.265), WebM. Reproducción con <code>VideoView</code> o <strong>Media3 ExoPlayer</strong>; streaming con HLS/DASH.</p></div>
+<div class="card"><h3>Animaciones</h3><p>Property Animation (<code>ObjectAnimator</code>), <code>AnimatedVectorDrawable</code>, MotionLayout, animaciones de Compose, <strong>Lottie</strong> (JSON), GIF animados.</p></div>
+<div class="card"><h3>Elementos visuales dinámicos</h3><p>Vistas que cambian en tiempo de ejecución: <code>RecyclerView</code>, <code>ViewPager2</code>, gráficos con <code>Canvas</code>, <code>SurfaceView</code>/<code>TextureView</code>, gráficas (MPAndroidChart), transiciones.</p></div>
+</div>
+
+<h2>4.3 Estructura del proyecto: dónde se guardan los recursos (Android)</h2>
+<div class="table-wrap"><table>
+<tr><th>Carpeta (en <code>app/src/main/</code>)</th><th>Contenido</th></tr>
+<tr><td><code>res/drawable/</code> (y <code>drawable-hdpi</code>, <code>-xhdpi</code>…)</td><td>Imágenes, íconos, formas XML, vectores y animaciones de dibujo</td></tr>
+<tr><td><code>res/mipmap-*/</code></td><td>Íconos del launcher de la app</td></tr>
+<tr><td><code>res/raw/</code></td><td>Archivos sin procesar: audio (mp3, ogg) y video (mp4) incluidos en la app</td></tr>
+<tr><td><code>res/anim/</code> y <code>res/animator/</code></td><td>Animaciones XML (vistas y propiedades)</td></tr>
+<tr><td><code>res/layout/</code></td><td>Diseños XML que usan los recursos</td></tr>
+<tr><td><code>res/values/</code></td><td>Colores, cadenas, estilos y dimensiones</td></tr>
+<tr><td><code>res/font/</code></td><td>Tipografías</td></tr>
+<tr><td><code>assets/</code></td><td>Archivos que se acceden como flujo (sin ID de recurso): fuentes, JSON, animaciones Lottie, HTML</td></tr>
+</table></div>
+<p>En iOS equivalen el <strong>Assets Catalog</strong> (<code>Assets.xcassets</code>) y el <em>bundle</em> de la app. En Flutter se declaran en <code>pubspec.yaml</code> bajo <code>assets:</code>.</p>
+
+<h3>Ejemplo: acceder a recursos</h3>
+<div class="code-wrap"><pre><code class="kotlin">// Imagen desde drawable
+imageView.setImageResource(R.drawable.logo)
+
+// Audio desde res/raw
+val mp = MediaPlayer.create(this, R.raw.sonido)
+mp.start()
+
+// Video desde res/raw
+val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.intro)
+videoView.setVideoURI(uri); videoView.start()</code></pre></div>
+
+<h2>4.4 Componentes de software para usar recursos multimedia</h2>
+<div class="table-wrap"><table>
+<tr><th>Componente</th><th>Función</th></tr>
+<tr><td><code>ImageView</code> / <code>Image</code> (Compose)</td><td>Mostrar imágenes</td></tr>
+<tr><td><code>Glide</code>, <code>Coil</code>, <code>Picasso</code></td><td>Cargar, redimensionar y almacenar en caché imágenes de internet</td></tr>
+<tr><td><code>MediaPlayer</code></td><td>Reproducir audio y video simple</td></tr>
+<tr><td><code>ExoPlayer (Media3)</code></td><td>Reproductor avanzado: streaming, listas, subtítulos</td></tr>
+<tr><td><code>SoundPool</code></td><td>Efectos de sonido cortos y simultáneos</td></tr>
+<tr><td><code>MediaRecorder</code>, <code>CameraX</code></td><td>Grabar audio/video y capturar fotos</td></tr>
+<tr><td><code>VideoView</code></td><td>Reproducir video con poca configuración</td></tr>
+<tr><td><code>MediaSession</code> / <code>MediaStore</code></td><td>Controles multimedia del sistema / acceso a la galería</td></tr>
+<tr><td><code>Lottie</code>, <code>ObjectAnimator</code></td><td>Animaciones</td></tr>
+<tr><td><code>Canvas</code>, <code>SurfaceView</code></td><td>Dibujo y gráficos dinámicos</td></tr>
+</table></div>
+
+<h3>Ejemplo: cargar imagen de internet con Glide y reproducir con ExoPlayer</h3>
+<div class="code-wrap"><pre><code class="kotlin">// Glide
+Glide.with(this).load("https://ejemplo.com/foto.jpg")
+    .placeholder(R.drawable.cargando).into(imageView)
+
+// ExoPlayer (Media3)
+val player = ExoPlayer.Builder(this).build()
+playerView.player = player
+player.setMediaItem(MediaItem.fromUri("https://ejemplo.com/video.mp4"))
+player.prepare(); player.play()
+// Liberar en onStop(): player.release()</code></pre></div>
+<div class="note warn"><strong>Buenas prácticas:</strong> libera <code>MediaPlayer</code>/<code>ExoPlayer</code> cuando no se usen, comprime las imágenes, usa WebP/vectores para reducir el tamaño del APK y ofrece texto alternativo (<code>contentDescription</code>) por accesibilidad.</div>
+
+<h2>4.5 Enlaces y videos recomendados</h2>
+<div class="resources"><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/media"><span class="ico">↗</span><span><strong>Multimedia en Android</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/media/media3/exoplayer"><span class="ico">↗</span><span><strong>ExoPlayer (Media3)</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/guide/topics/resources/providing-resources"><span class="ico">↗</span><span><strong>Recursos de la app</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/media/camera/camerax"><span class="ico">↗</span><span><strong>CameraX</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://bumptech.github.io/glide/"><span class="ico">↗</span><span><strong>Glide (imágenes)</strong><small>bumptech.github.io</small></span></a><a class="res" target="_blank" rel="noopener" href="https://coil-kt.github.io/coil/"><span class="ico">↗</span><span><strong>Coil (imágenes en Kotlin)</strong><small>coil-kt.github.io</small></span></a><a class="res" target="_blank" rel="noopener" href="https://airbnb.io/lottie/"><span class="ico">↗</span><span><strong>Lottie (animaciones)</strong><small>airbnb.io</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=mediaplayer+android+studio+audio+tutorial+espa%C3%B1ol"><span class="ico">▶</span><span><strong>Reproducir audio con MediaPlayer</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=exoplayer+media3+android+video+tutorial"><span class="ico">▶</span><span><strong>Video con ExoPlayer / Media3</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=glide+coil+cargar+im%C3%A1genes+android+tutorial"><span class="ico">▶</span><span><strong>Cargar imágenes con Glide / Coil</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=lottie+animaciones+android+studio+tutorial"><span class="ico">▶</span><span><strong>Animaciones Lottie</strong><small>Buscar en YouTube</small></span></a></div>
+
+    <div class="pager"><a href="03-sensores.html">← 3. Gestión de sensores</a><a href="05-servicios-notificaciones.html">5. Servicios y notificaciones →</a></div>
+  </main>
+</div>
+<footer>Actividad 12/11/2026 · Tutorial de desarrollo de aplicaciones móviles</footer>
+<button id="toTop" aria-label="Volver arriba">↑</button>
+<script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#04060d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tutorial Móvil">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" type="image/png" href="../icons/icon-192.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<title>Control de versiones · Tutorial Desarrollo Móvil</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')==='light'?'light':'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="icon-btn" id="menuBtn" aria-label="Abrir menú">&#9776;</button>
+  <a class="brand" href="../index.html"><span class="logo-mark" aria-hidden="true"></span><span class="brand-text">Tutorial <span>Desarrollo Móvil</span></span></a>
+  <span class="status-chip" id="netChip">Sistema en línea</span>
+  <button class="icon-btn" id="installBtn" hidden>Instalar</button>
+  <button class="icon-btn" id="themeBtn" aria-label="Cambiar entre modo oscuro y claro">Tema</button>
+</header>
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <h3>Módulos</h3>
+    <a href="../index.html">Inicio</a>
+    
+    <a href="01-control-versiones.html" class="active">1. Control de versiones</a>
+    <a href="02-persistencia-datos.html">2. Persistencia y acceso a datos</a>
+    <a href="03-sensores.html">3. Gestión de sensores</a>
+    <a href="04-multimedia.html">4. Recursos multimedia</a>
+    <a href="05-servicios-notificaciones.html">5. Servicios y notificaciones</a>
+    <a href="06-librerias-toolkits.html">6. Librerías y toolkits</a>
+    <a href="07-depuracion-seguridad.html">7. Depuración y seguridad</a>
+    <a href="08-referencias.html">Referencias</a>
+  </nav>
+  <main class="content">
+    <div class="kicker">MÓDULO 01 / 07</div>
+    <h1>Control de versiones</h1>
+    <p class="lead">Qué es, qué tipos existen, cómo funcionan y cómo se usan para rastrear y gestionar cambios.</p>
+    
+<h2>1.1 ¿Qué es el control de versiones?</h2>
+<div class="card">
+<p>El <strong>control de versiones</strong> (VCS, <em>Version Control System</em>) es un sistema que registra los cambios realizados sobre archivos a lo largo del tiempo, de modo que se pueda recuperar cualquier versión anterior, comparar modificaciones, saber <strong>quién</strong> cambió <strong>qué</strong> y <strong>cuándo</strong>, y trabajar en equipo sin sobrescribir el trabajo de otros.</p>
+<p>En desarrollo móvil es indispensable: una app tiene código (Kotlin/Java/Swift/Dart), recursos, configuraciones de Gradle y dependencias que cambian constantemente y que normalmente mantienen varias personas a la vez.</p>
+</div>
+
+<h2>1.2 Tipos de sistemas de control de versiones</h2>
+<p>Existen tres grandes modelos. Se explica cada uno con sus características, ventajas y desventajas.</p>
+
+<div class="tabs">
+  <button class="tab-btn active" data-target="t-local">Local</button>
+  <button class="tab-btn" data-target="t-cent">Centralizado</button>
+  <button class="tab-btn" data-target="t-dist">Distribuido</button>
+</div>
+<div class="tab-group-holder">
+<div class="tab-panel active" id="t-local">
+  <h3>A) Control de versiones local (LVCS)</h3>
+  <p>Todo ocurre en el equipo del usuario. Una base de datos local guarda los cambios (<em>deltas</em>) de cada archivo. Ejemplo clásico: <strong>RCS</strong>; también es el “sistema” informal de copiar carpetas como <code>proyecto_final_v2_FINAL</code>.</p>
+  <p><strong>Características:</strong> sin servidor, un solo usuario, historial en disco local.</p>
+  <ul class="pros"><li>Muy simple, no requiere red ni servidor.</li><li>Rápido y de bajo costo.</li></ul>
+  <ul class="cons"><li>No permite colaboración.</li><li>Si el disco falla, se pierde todo el historial (punto único de falla).</li><li>Fácil equivocarse de carpeta o sobrescribir.</li></ul>
+</div>
+<div class="tab-panel" id="t-cent">
+  <h3>B) Control de versiones centralizado (CVCS)</h3>
+  <p>Un <strong>servidor central</strong> guarda todas las versiones y los clientes descargan (<em>checkout</em>) y suben (<em>commit</em>) cambios a ese servidor. Ejemplos: <strong>Subversion (SVN)</strong>, CVS, Perforce.</p>
+  <p><strong>Características:</strong> repositorio único, control de permisos centralizado, historial lineal con números de revisión, los archivos se pueden “bloquear” mientras se editan.</p>
+  <ul class="pros"><li>Administración y permisos sencillos.</li><li>Todos ven el mismo estado del proyecto.</li><li>Buen manejo de archivos binarios grandes (Perforce).</li></ul>
+  <ul class="cons"><li>Punto único de falla: si el servidor cae, nadie puede hacer commit.</li><li>Requiere conexión para casi todo.</li><li>Ramas (<em>branches</em>) y fusiones (<em>merge</em>) más pesadas y propensas a conflictos.</li></ul>
+</div>
+<div class="tab-panel" id="t-dist">
+  <h3>C) Control de versiones distribuido (DVCS)</h3>
+  <p>Cada usuario <strong>clona</strong> el repositorio completo, incluido todo el historial. Se trabaja localmente y luego se sincroniza con otros repositorios (<em>push/pull</em>). Ejemplos: <strong>Git</strong>, Mercurial, Bazaar. Plataformas que alojan Git: GitHub, GitLab, Bitbucket.</p>
+  <p><strong>Características:</strong> historial completo local, commits sin conexión, ramas baratas y rápidas, integridad por hash SHA.</p>
+  <ul class="pros"><li>Trabajo sin conexión y muy rápido.</li><li>Cada clon es una copia de seguridad completa.</li><li>Ramificación y fusión potentes; flujos de trabajo flexibles (Pull Request, Git Flow).</li></ul>
+  <ul class="cons"><li>Curva de aprendizaje mayor (staging area, rebase, etc.).</li><li>Repositorios muy grandes o con binarios pesados ocupan mucho (se mitiga con Git LFS).</li><li>Sin bloqueo nativo de archivos.</li></ul>
+</div>
+</div>
+
+<h3>Comparativa rápida</h3>
+<div class="table-wrap"><table>
+<tr><th>Aspecto</th><th>Local</th><th>Centralizado</th><th>Distribuido</th></tr>
+<tr><td>Ejemplos</td><td>RCS</td><td>SVN, CVS, Perforce</td><td>Git, Mercurial</td></tr>
+<tr><td>Dónde está el historial</td><td>Un equipo</td><td>Servidor</td><td>Todos los clones</td></tr>
+<tr><td>Trabajo sin red</td><td>Sí</td><td>Limitado</td><td>Sí</td></tr>
+<tr><td>Colaboración</td><td>No</td><td>Sí</td><td>Sí (muy flexible)</td></tr>
+<tr><td>Riesgo de pérdida</td><td>Alto</td><td>Medio (servidor)</td><td>Bajo</td></tr>
+</table></div>
+
+<h2>1.3 ¿Cómo funciona? (ejemplo con Git)</h2>
+<div class="card">
+<p>Git maneja tres áreas: <strong>directorio de trabajo</strong> (tus archivos), <strong>área de preparación o <em>staging</em></strong> (lo que irá en el próximo commit) y el <strong>repositorio</strong> (historial de commits). Cada commit es una “instantánea” del proyecto identificada por un hash único y enlazada a su commit padre.</p>
+<p><code>Directorio de trabajo</code> → <code>git add</code> → <code>Staging</code> → <code>git commit</code> → <code>Repositorio local</code> → <code>git push</code> → <code>Repositorio remoto</code></p>
+</div>
+
+<h2>1.4 Rastreo y gestión de cambios</h2>
+<p>El control de versiones permite <strong>rastrear</strong> cada modificación y <strong>gestionarla</strong> con estas herramientas:</p>
+<div class="grid">
+<div class="card"><h3>Rastreo</h3><ul>
+<li><code>git status</code>: qué archivos cambiaron.</li>
+<li><code>git diff</code>: qué líneas cambiaron.</li>
+<li><code>git log --oneline --graph</code>: historial de commits.</li>
+<li><code>git blame archivo</code>: quién modificó cada línea.</li>
+<li><code>git bisect</code>: encuentra el commit que introdujo un error.</li></ul></div>
+<div class="card"><h3>Gestión</h3><ul>
+<li><strong>Ramas</strong> (<code>branch</code>) para funciones nuevas o correcciones.</li>
+<li><strong>Merge / rebase</strong> para integrar cambios.</li>
+<li><strong>Pull Requests</strong> y revisión de código.</li>
+<li><strong>Tags</strong> para marcar versiones (v1.0.0).</li>
+<li><code>git revert</code> / <code>git reset</code> para deshacer.</li></ul></div>
+<div class="card"><h3>Equipo</h3><ul>
+<li>Resolución de <strong>conflictos</strong> de fusión.</li>
+<li><code>.gitignore</code> (ej. <code>build/</code>, <code>local.properties</code>).</li>
+<li>Integración continua (GitHub Actions) para compilar la app.</li>
+<li>Issues y tableros para organizar tareas.</li></ul></div>
+</div>
+
+<h2>1.5 Ejemplos prácticos</h2>
+<h3>Ejemplo 1: Primer repositorio de una app Android</h3>
+<div class="code-wrap"><pre><code class="bash">cd MiAppAndroid
+git init
+git add .
+git commit -m "Proyecto inicial: pantalla de login"
+git branch -M main
+git remote add origin https://github.com/usuario/MiAppAndroid.git
+git push -u origin main</code></pre></div>
+<h3>Ejemplo 2: Trabajar con una rama</h3>
+<div class="code-wrap"><pre><code class="bash">git switch -c feature/sensor-gps      # crear y cambiar de rama
+# ... editar archivos ...
+git add .
+git commit -m "Agrega lectura de ubicación GPS"
+git switch main
+git merge feature/sensor-gps          # integrar la rama
+git branch -d feature/sensor-gps      # borrar rama ya fusionada</code></pre></div>
+<h3>Ejemplo 3: Deshacer y consultar</h3>
+<div class="code-wrap"><pre><code class="bash">git log --oneline -5                 # últimos 5 commits
+git diff HEAD~1                      # cambios vs. commit anterior
+git revert a1b2c3d                   # deshace un commit creando otro
+git restore archivo.kt               # descarta cambios no confirmados</code></pre></div>
+<h3>Ejemplo 4: .gitignore típico de Android</h3>
+<div class="code-wrap"><pre><code class="text">*.iml
+.gradle/
+/local.properties
+/.idea/
+/build/
+/captures/
+.externalNativeBuild/
+*.apk
+*.keystore</code></pre></div>
+<div class="note warn"><strong>Importante:</strong> nunca subas llaves de firma (<code>.keystore</code>), contraseñas ni claves de API al repositorio.</div>
+
+<h2>1.6 Autoevaluación</h2>
+<div class="card quiz">
+<div class="q" data-correct="b"><strong>¿Cuál comando guarda una instantánea en el repositorio local?</strong>
+<button class="opt" data-v="a">git push</button><button class="opt" data-v="b">git commit</button><button class="opt" data-v="c">git clone</button><div class="fb"></div></div>
+<div class="q" data-correct="c"><strong>Git es un sistema de control de versiones…</strong>
+<button class="opt" data-v="a">Local</button><button class="opt" data-v="b">Centralizado</button><button class="opt" data-v="c">Distribuido</button><div class="fb"></div></div>
+</div>
+
+<h2>1.7 Enlaces y videos recomendados</h2>
+<div class="resources"><a class="res" target="_blank" rel="noopener" href="https://git-scm.com/book/es/v2"><span class="ico">↗</span><span><strong>Pro Git (libro oficial en español)</strong><small>git-scm.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://git-scm.com/doc"><span class="ico">↗</span><span><strong>Documentación de Git</strong><small>git-scm.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://docs.github.com/es/get-started"><span class="ico">↗</span><span><strong>Introducción a GitHub</strong><small>docs.github.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://svnbook.red-bean.com/"><span class="ico">↗</span><span><strong>Libro de Subversion (SVN)</strong><small>svnbook.red-bean.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://learngitbranching.js.org/?locale=es_ES"><span class="ico">↗</span><span><strong>Learn Git Branching (interactivo)</strong><small>Práctica visual</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/studio/intro/version-control"><span class="ico">↗</span><span><strong>Control de versiones en Android Studio</strong><small>developer.android.com</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=curso+de+git+y+github+desde+cero+en+espa%C3%B1ol"><span class="ico">▶</span><span><strong>Curso de Git y GitHub desde cero</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=qu%C3%A9+es+el+control+de+versiones+git+svn+diferencias"><span class="ico">▶</span><span><strong>¿Qué es el control de versiones?</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=git+y+github+android+studio+tutorial"><span class="ico">▶</span><span><strong>Git en Android Studio</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=git+branch+merge+conflictos+tutorial+espa%C3%B1ol"><span class="ico">▶</span><span><strong>Ramas, merge y conflictos</strong><small>Buscar en YouTube</small></span></a></div>
+
+    <div class="pager"><a href="../index.html">← Inicio</a><a href="02-persistencia-datos.html">2. Persistencia y acceso a datos →</a></div>
+  </main>
+</div>
+<footer>Actividad 12/11/2026 · Tutorial de desarrollo de aplicaciones móviles</footer>
+<button id="toTop" aria-label="Volver arriba">↑</button>
+<script src="../js/main.js"></script>
+</body>
+</html>

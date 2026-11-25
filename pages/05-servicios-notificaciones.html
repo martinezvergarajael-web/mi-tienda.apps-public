@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#04060d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tutorial Móvil">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" type="image/png" href="../icons/icon-192.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<title>Servicios y notificaciones · Tutorial Desarrollo Móvil</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')==='light'?'light':'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="icon-btn" id="menuBtn" aria-label="Abrir menú">&#9776;</button>
+  <a class="brand" href="../index.html"><span class="logo-mark" aria-hidden="true"></span><span class="brand-text">Tutorial <span>Desarrollo Móvil</span></span></a>
+  <span class="status-chip" id="netChip">Sistema en línea</span>
+  <button class="icon-btn" id="installBtn" hidden>Instalar</button>
+  <button class="icon-btn" id="themeBtn" aria-label="Cambiar entre modo oscuro y claro">Tema</button>
+</header>
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <h3>Módulos</h3>
+    <a href="../index.html">Inicio</a>
+    
+    <a href="01-control-versiones.html">1. Control de versiones</a>
+    <a href="02-persistencia-datos.html">2. Persistencia y acceso a datos</a>
+    <a href="03-sensores.html">3. Gestión de sensores</a>
+    <a href="04-multimedia.html">4. Recursos multimedia</a>
+    <a href="05-servicios-notificaciones.html" class="active">5. Servicios y notificaciones</a>
+    <a href="06-librerias-toolkits.html">6. Librerías y toolkits</a>
+    <a href="07-depuracion-seguridad.html">7. Depuración y seguridad</a>
+    <a href="08-referencias.html">Referencias</a>
+  </nav>
+  <main class="content">
+    <div class="kicker">MÓDULO 05 / 07</div>
+    <h1>Servicios y notificaciones</h1>
+    <p class="lead">Servicios, tareas en segundo plano, notificaciones, proveedores de contenido y la nube para apps móviles.</p>
+    
+<h2>5.1 Definición</h2>
+<div class="card">
+<p>Un <strong>servicio</strong> es un componente de la aplicación que realiza trabajo sin interfaz de usuario, normalmente de larga duración o que debe continuar aunque el usuario cambie de pantalla. Una <strong>notificación</strong> es un mensaje que la app muestra fuera de su interfaz (barra de estado, pantalla de bloqueo) para informar o invitar a una acción.</p>
+</div>
+
+<h2>5.2 Tareas en segundo plano</h2>
+<div class="card">
+<p>Son operaciones que se ejecutan <strong>sin bloquear el hilo principal (UI)</strong> y, en ocasiones, sin que la app esté visible: sincronizar datos, descargar archivos, subir fotos, reproducir música o enviar registros. Android limita el trabajo en segundo plano para cuidar la batería, por lo que se debe elegir la herramienta adecuada:</p>
+</div>
+<div class="table-wrap"><table>
+<tr><th>Herramienta</th><th>Cuándo usarla</th></tr>
+<tr><td><strong>Corrutinas / hilos</strong></td><td>Trabajo corto mientras la app está abierta (red, BD)</td></tr>
+<tr><td><strong>WorkManager</strong></td><td>Trabajo diferible y garantizado (sincronizar, subir logs), aunque se cierre la app</td></tr>
+<tr><td><strong>Foreground Service</strong></td><td>Tarea visible para el usuario (música, navegación, descarga) con notificación persistente</td></tr>
+<tr><td><strong>AlarmManager</strong></td><td>Acciones a una hora exacta (alarmas, recordatorios)</td></tr>
+<tr><td><strong>Servicio enlazado (Bound)</strong></td><td>Comunicación cliente-servidor entre componentes</td></tr>
+</table></div>
+
+<h2>5.3 Tratamiento de notificaciones</h2>
+<div class="grid">
+<div class="card"><h3>Tipos</h3><ul><li><strong>Locales</strong>: las genera la propia app (recordatorios).</li><li><strong>Push (remotas)</strong>: llegan desde un servidor mediante Firebase Cloud Messaging (FCM) o APNs en iOS.</li></ul></div>
+<div class="card"><h3>Elementos</h3><ul><li>Canal (<code>NotificationChannel</code>, Android 8+)</li><li>Ícono, título y texto</li><li>Acciones y <code>PendingIntent</code></li><li>Prioridad/importancia</li></ul></div>
+<div class="card"><h3>Permiso</h3><p>Desde Android 13 se necesita el permiso <code>POST_NOTIFICATIONS</code> solicitado en tiempo de ejecución.</p></div>
+</div>
+
+<h2>5.4 Proceso de implementación</h2>
+
+<h3>A) Proveedores de contenido (Content Providers)</h3>
+<p>Permiten <strong>compartir datos</strong> de forma controlada entre aplicaciones (contactos, calendario, galería) mediante URIs y un <code>ContentResolver</code>.</p>
+<ol>
+<li>Crear una clase que extienda <code>ContentProvider</code> e implementar <code>query, insert, update, delete, getType</code>.</li>
+<li>Definir la <em>authority</em> y las URIs (<code>content://com.ejemplo.app.provider/tareas</code>).</li>
+<li>Declararlo en el <code>AndroidManifest.xml</code> con permisos.</li>
+<li>Consumirlo con <code>contentResolver</code>.</li>
+</ol>
+<div class="code-wrap"><pre><code class="xml/kotlin">&lt;provider
+    android:name=".TareasProvider"
+    android:authorities="com.ejemplo.app.provider"
+    android:exported="false" /&gt;
+
+// Consumir contactos del sistema
+val cursor = contentResolver.query(
+    ContactsContract.Contacts.CONTENT_URI, null, null, null, null)</code></pre></div>
+
+<h3>B) Tareas en segundo plano con WorkManager</h3>
+<ol>
+<li>Agregar la dependencia <code>androidx.work:work-runtime-ktx</code>.</li>
+<li>Crear una clase <code>Worker</code> con el trabajo en <code>doWork()</code>.</li>
+<li>Definir restricciones (red, batería) y encolar la solicitud.</li>
+</ol>
+<div class="code-wrap"><pre><code class="kotlin">class SyncWorker(ctx: Context, p: WorkerParameters) : Worker(ctx, p) {
+    override fun doWork(): Result {
+        // sincronizar datos con el servidor
+        return Result.success()
+    }
+}
+
+val restricciones = Constraints.Builder()
+    .setRequiredNetworkType(NetworkType.CONNECTED).build()
+val peticion = PeriodicWorkRequestBuilder&lt;SyncWorker&gt;(15, TimeUnit.MINUTES)
+    .setConstraints(restricciones).build()
+WorkManager.getInstance(this).enqueue(peticion)</code></pre></div>
+
+<h3>C) Notificaciones</h3>
+<ol>
+<li>Pedir el permiso <code>POST_NOTIFICATIONS</code> (Android 13+).</li>
+<li>Crear el canal de notificación.</li>
+<li>Construir la notificación con <code>NotificationCompat.Builder</code>.</li>
+<li>Mostrarla con <code>NotificationManagerCompat.notify()</code>.</li>
+</ol>
+<div class="code-wrap"><pre><code class="kotlin">val canal = NotificationChannel("avisos", "Avisos", NotificationManager.IMPORTANCE_DEFAULT)
+getSystemService(NotificationManager::class.java).createNotificationChannel(canal)
+
+val intent = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java),
+    PendingIntent.FLAG_IMMUTABLE)
+
+val noti = NotificationCompat.Builder(this, "avisos")
+    .setSmallIcon(R.drawable.ic_notificacion)
+    .setContentTitle("Recordatorio")
+    .setContentText("Tienes una tarea pendiente")
+    .setContentIntent(intent)
+    .setAutoCancel(true)
+    .build()
+
+NotificationManagerCompat.from(this).notify(1, noti)</code></pre></div>
+
+<h3>D) Servicio en primer plano (resumen)</h3>
+<div class="code-wrap"><pre><code class="kotlin">class MusicaService : Service() {
+    override fun onStartCommand(i: Intent?, f: Int, id: Int): Int {
+        val noti = NotificationCompat.Builder(this, "musica")
+            .setSmallIcon(R.drawable.ic_musica).setContentTitle("Reproduciendo").build()
+        startForeground(1, noti)   // obligatorio mostrar notificación
+        return START_STICKY
+    }
+    override fun onBind(i: Intent?): IBinder? = null
+}</code></pre></div>
+
+<h2>5.5 Servicios de cómputo en la nube para apps móviles</h2>
+<div class="table-wrap"><table>
+<tr><th>Servicio</th><th>Para qué sirve</th></tr>
+<tr><td><strong>Firebase</strong> (Auth, Firestore, Realtime DB, Storage, FCM, Crashlytics, Analytics)</td><td>Backend completo sin servidor: usuarios, datos en tiempo real, archivos, notificaciones push y reportes de errores</td></tr>
+<tr><td><strong>AWS Amplify / Lambda / S3 / Cognito</strong></td><td>Autenticación, funciones sin servidor, almacenamiento y APIs</td></tr>
+<tr><td><strong>Google Cloud (Cloud Functions, Cloud Run)</strong></td><td>Lógica de backend escalable</td></tr>
+<tr><td><strong>Microsoft Azure Mobile Apps / App Center</strong></td><td>Backend móvil, distribución y análisis</td></tr>
+<tr><td><strong>Supabase</strong></td><td>Alternativa open source (PostgreSQL, Auth, Storage)</td></tr>
+</table></div>
+<p><strong>Modelos de servicio:</strong> <em>IaaS</em> (infraestructura), <em>PaaS</em> (plataforma) y <em>BaaS</em> (Backend as a Service, como Firebase) — este último es el más usado en apps móviles porque evita administrar servidores.</p>
+
+<h2>5.6 Enlaces y videos recomendados</h2>
+<div class="resources"><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/develop/background-work/background-tasks"><span class="ico">↗</span><span><strong>Trabajo en segundo plano</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/develop/background-work/background-tasks/persistent"><span class="ico">↗</span><span><strong>WorkManager</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/develop/ui/views/notifications"><span class="ico">↗</span><span><strong>Notificaciones en Android</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/guide/topics/providers/content-providers"><span class="ico">↗</span><span><strong>Proveedores de contenido</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/develop/background-work/services"><span class="ico">↗</span><span><strong>Servicios en Android</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://firebase.google.com/docs/cloud-messaging"><span class="ico">↗</span><span><strong>Firebase Cloud Messaging</strong><small>firebase.google.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://firebase.google.com/docs"><span class="ico">↗</span><span><strong>Documentación de Firebase</strong><small>firebase.google.com</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=notificaciones+android+studio+kotlin+tutorial+espa%C3%B1ol"><span class="ico">▶</span><span><strong>Notificaciones en Android</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=workmanager+android+kotlin+tutorial"><span class="ico">▶</span><span><strong>WorkManager paso a paso</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=firebase+cloud+messaging+notificaciones+push+android"><span class="ico">▶</span><span><strong>Notificaciones push con FCM</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=content+provider+android+tutorial+espa%C3%B1ol"><span class="ico">▶</span><span><strong>Content Providers en Android</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=foreground+service+android+kotlin+tutorial"><span class="ico">▶</span><span><strong>Servicios en primer plano</strong><small>Buscar en YouTube</small></span></a></div>
+
+    <div class="pager"><a href="04-multimedia.html">← 4. Recursos multimedia</a><a href="06-librerias-toolkits.html">6. Librerías y toolkits →</a></div>
+  </main>
+</div>
+<footer>Actividad 12/11/2026 · Tutorial de desarrollo de aplicaciones móviles</footer>
+<button id="toTop" aria-label="Volver arriba">↑</button>
+<script src="../js/main.js"></script>
+</body>
+</html>

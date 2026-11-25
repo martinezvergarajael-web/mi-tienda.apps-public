@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#04060d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tutorial Móvil">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<title>Tutorial de Desarrollo de Aplicaciones Móviles</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')==='light'?'light':'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="icon-btn" id="menuBtn" aria-label="Abrir menú">&#9776;</button>
+  <a class="brand" href="index.html"><span class="logo-mark" aria-hidden="true"></span><span class="brand-text">Tutorial <span>Desarrollo Móvil</span></span></a>
+  <span class="status-chip" id="netChip">Sistema en línea</span>
+  <button class="icon-btn" id="installBtn" hidden>Instalar</button>
+  <button class="icon-btn" id="themeBtn" aria-label="Cambiar entre modo oscuro y claro">Tema</button>
+</header>
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <h3>Módulos</h3>
+    <a class="active" href="index.html">Inicio</a>
+    <a href="pages/01-control-versiones.html">1. Control de versiones</a>
+    <a href="pages/02-persistencia-datos.html">2. Persistencia y acceso a datos</a>
+    <a href="pages/03-sensores.html">3. Gestión de sensores</a>
+    <a href="pages/04-multimedia.html">4. Recursos multimedia</a>
+    <a href="pages/05-servicios-notificaciones.html">5. Servicios y notificaciones</a>
+    <a href="pages/06-librerias-toolkits.html">6. Librerías y toolkits</a>
+    <a href="pages/07-depuracion-seguridad.html">7. Depuración y seguridad</a>
+    <a href="pages/08-referencias.html">Referencias</a>
+  </nav>
+  <main class="content">
+    <section class="hero">
+      <div class="hero-tags"><span>Android</span><span>iOS</span><span>Kotlin</span><span>Flutter</span></div>
+      <h1>Tutorial de Desarrollo de Aplicaciones Móviles</h1>
+      <p>Siete módulos esenciales explicados paso a paso, con ejemplos de código, enlaces a documentación oficial y videos de YouTube.</p>
+      <div class="stats">
+        <div class="stat"><b data-n="7">7</b><span>Módulos</span></div>
+        <div class="stat"><b data-n="47">47</b><span>Enlaces</span></div>
+        <div class="stat"><b data-n="28">28</b><span>Videos</span></div>
+      </div>
+    </section>
+
+    <div class="search-wrap"><input id="search" type="search" placeholder="Buscar módulo..." aria-label="Buscar módulo"></div>
+
+    <div class="grid">
+      <a class="card topic-card" href="pages/01-control-versiones.html">
+        <span class="card-ico" aria-hidden="true"><svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg></span>
+        <div class="num">01</div>
+        <h3>Control de versiones</h3>
+        <p>Local, centralizado y distribuido. Git, ramas, commits y ejemplos.</p>
+      </a>
+      <a class="card topic-card" href="pages/02-persistencia-datos.html">
+        <span class="card-ico" aria-hidden="true"><svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></span>
+        <div class="num">02</div>
+        <h3>Persistencia y acceso a datos</h3>
+        <p>Archivos, SQLite, Room (ORM), servicios web y autenticación.</p>
+      </a>
+      <a class="card topic-card" href="pages/03-sensores.html">
+        <span class="card-ico" aria-hidden="true"><svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M12 18h.01"/><path d="M2 10c1.5-1.5 3-2 5-2"/><path d="M22 10c-1.5-1.5-3-2-5-2"/><path d="M2 14c1.5 1.5 3 2 5 2"/><path d="M22 14c-1.5 1.5-3 2-5 2"/></svg></span>
+        <div class="num">03</div>
+        <h3>Gestión de sensores</h3>
+        <p>Tipos de sensores, habilitación, lectura y procesamiento.</p>
+      </a>
+      <a class="card topic-card" href="pages/04-multimedia.html">
+        <span class="card-ico" aria-hidden="true"><svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M10 9l5 3-5 3V9z"/><path d="M2 18h20"/></svg></span>
+        <div class="num">04</div>
+        <h3>Recursos multimedia</h3>
+        <p>Imágenes, audio, video, animaciones y estructura del proyecto.</p>
+      </a>
+      <a class="card topic-card" href="pages/05-servicios-notificaciones.html">
+        <span class="card-ico" aria-hidden="true"><svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 7.5 2.5 7.5h-17S6 15 6 9z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg></span>
+        <div class="num">05</div>
+        <h3>Servicios y notificaciones</h3>
+        <p>Segundo plano, WorkManager, notificaciones, proveedores y nube.</p>
+      </a>
+      <a class="card topic-card" href="pages/06-librerias-toolkits.html">
+        <span class="card-ico" aria-hidden="true"><svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/><path d="M3 17.5l9 5 9-5" opacity=".5"/></svg></span>
+        <div class="num">06</div>
+        <h3>Librerías y toolkits</h3>
+        <p>Qué son, librerías especializadas y toolkits (Flutter, RN, nativo).</p>
+      </a>
+      <a class="card topic-card" href="pages/07-depuracion-seguridad.html">
+        <span class="card-ico" aria-hidden="true"><svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.2 7.6-8 9-4.8-1.4-8-4.5-8-9V6l8-3z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg></span>
+        <div class="num">07</div>
+        <h3>Depuración y seguridad</h3>
+        <p>Logcat, debugger, profiler y buenas prácticas de seguridad.</p>
+      </a>
+    </div>
+
+    
+    <section class="note install-box" id="installBox">
+      <strong>Instalar en tu celular (funciona sin internet)</strong>
+      <ol>
+        <li><strong>Android (Chrome):</strong> abre la página con internet una vez, toca el botón <em>Instalar</em> de la barra superior o el menú ⋮ → <em>Instalar aplicación</em>.</li>
+        <li><strong>iPhone (Safari):</strong> toca <em>Compartir</em> → <em>Añadir a pantalla de inicio</em>.</li>
+        <li>Abre la app una vez con conexión para que se guarde todo. Después ya no necesitas internet para leer los módulos y los ejemplos de código.</li>
+      </ol>
+      <p style="margin:6px 0 0;color:var(--muted);font-size:.92rem">Los enlaces externos (documentación y videos de YouTube) sí requieren conexión.</p>
+    </section>
+
+    <div class="note" style="margin-top:32px">
+      <strong>Cómo usar este sitio:</strong> elige un tema, lee la explicación, copia los ejemplos con el botón <em>Copiar</em>, practica en Android Studio y refuerza con los enlaces y videos al final de cada página. Puedes cambiar entre modo oscuro y claro con el botón <em>Tema</em> de la barra superior.
+    </div>
+  </main>
+</div>
+<footer>Actividad 12/11/2026 · Tutorial de desarrollo de aplicaciones móviles</footer>
+<button id="toTop" aria-label="Volver arriba">↑</button>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#04060d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tutorial Móvil">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" type="image/png" href="../icons/icon-192.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<title>Gestión de sensores · Tutorial Desarrollo Móvil</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')==='light'?'light':'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="icon-btn" id="menuBtn" aria-label="Abrir menú">&#9776;</button>
+  <a class="brand" href="../index.html"><span class="logo-mark" aria-hidden="true"></span><span class="brand-text">Tutorial <span>Desarrollo Móvil</span></span></a>
+  <span class="status-chip" id="netChip">Sistema en línea</span>
+  <button class="icon-btn" id="installBtn" hidden>Instalar</button>
+  <button class="icon-btn" id="themeBtn" aria-label="Cambiar entre modo oscuro y claro">Tema</button>
+</header>
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <h3>Módulos</h3>
+    <a href="../index.html">Inicio</a>
+    
+    <a href="01-control-versiones.html">1. Control de versiones</a>
+    <a href="02-persistencia-datos.html">2. Persistencia y acceso a datos</a>
+    <a href="03-sensores.html" class="active">3. Gestión de sensores</a>
+    <a href="04-multimedia.html">4. Recursos multimedia</a>
+    <a href="05-servicios-notificaciones.html">5. Servicios y notificaciones</a>
+    <a href="06-librerias-toolkits.html">6. Librerías y toolkits</a>
+    <a href="07-depuracion-seguridad.html">7. Depuración y seguridad</a>
+    <a href="08-referencias.html">Referencias</a>
+  </nav>
+  <main class="content">
+    <div class="kicker">MÓDULO 03 / 07</div>
+    <h1>Gestión de sensores</h1>
+    <p class="lead">Qué son los sensores, cuáles incluyen los móviles y cómo habilitarlos, leerlos y procesar su información.</p>
+    
+<h2>3.1 Definición de sensores</h2>
+<div class="card">
+<p>Un <strong>sensor</strong> es un componente de hardware (o virtual, calculado por software) que mide una magnitud física del entorno o del propio dispositivo —aceleración, giro, luz, presión, campo magnético, posición— y la convierte en una señal digital que las aplicaciones pueden leer. Los sensores permiten que la app “perciba” el mundo: rotar la pantalla, contar pasos, navegar con mapas o ajustar el brillo.</p>
+</div>
+
+<h2>3.2 Tipos de sensores en dispositivos móviles</h2>
+<div class="tabs">
+  <button class="tab-btn active" data-target="t-mov">Movimiento</button>
+  <button class="tab-btn" data-target="t-amb">Ambientales</button>
+  <button class="tab-btn" data-target="t-pos">Posición</button>
+  <button class="tab-btn" data-target="t-otros">Otros</button>
+</div>
+<div>
+<div class="tab-panel active" id="t-mov">
+  <div class="table-wrap"><table>
+  <tr><th>Sensor</th><th>Mide</th><th>Uso típico</th></tr>
+  <tr><td>Acelerómetro</td><td>Aceleración (m/s²) en ejes X, Y, Z</td><td>Rotación de pantalla, sacudir, juegos</td></tr>
+  <tr><td>Giroscopio</td><td>Velocidad de rotación (rad/s)</td><td>Realidad virtual, estabilización</td></tr>
+  <tr><td>Gravedad / Aceleración lineal</td><td>Gravedad o aceleración sin gravedad</td><td>Detección de movimiento</td></tr>
+  <tr><td>Vector de rotación</td><td>Orientación del dispositivo</td><td>Brújula 3D, AR</td></tr>
+  <tr><td>Contador/Detector de pasos</td><td>Pasos dados</td><td>Apps de salud y fitness</td></tr>
+  </table></div>
+</div>
+<div class="tab-panel" id="t-amb">
+  <div class="table-wrap"><table>
+  <tr><th>Sensor</th><th>Mide</th><th>Uso típico</th></tr>
+  <tr><td>Luz</td><td>Iluminación (lux)</td><td>Brillo automático</td></tr>
+  <tr><td>Proximidad</td><td>Distancia a un objeto cercano</td><td>Apagar pantalla en llamadas</td></tr>
+  <tr><td>Barómetro</td><td>Presión atmosférica (hPa)</td><td>Altitud, clima</td></tr>
+  <tr><td>Temperatura / Humedad</td><td>Temperatura y humedad ambiente (si existe)</td><td>Apps de clima</td></tr>
+  </table></div>
+</div>
+<div class="tab-panel" id="t-pos">
+  <div class="table-wrap"><table>
+  <tr><th>Sensor</th><th>Mide</th><th>Uso típico</th></tr>
+  <tr><td>Magnetómetro</td><td>Campo magnético (µT)</td><td>Brújula</td></tr>
+  <tr><td>GPS / GNSS</td><td>Latitud, longitud, altitud</td><td>Mapas, navegación, delivery</td></tr>
+  <tr><td>Wi-Fi / Bluetooth / Celular</td><td>Posición aproximada por señales</td><td>Ubicación en interiores</td></tr>
+  </table></div>
+</div>
+<div class="tab-panel" id="t-otros">
+  <ul>
+    <li><strong>Cámara</strong> y <strong>micrófono</strong>: captura de imagen y audio.</li>
+    <li><strong>Huella digital / reconocimiento facial</strong>: biometría.</li>
+    <li><strong>Ritmo cardíaco</strong>: sensores de salud en wearables.</li>
+    <li><strong>NFC</strong>: comunicación de corto alcance (pagos, etiquetas).</li>
+  </ul>
+</div>
+</div>
+<div class="note">Los sensores se clasifican también como <strong>físicos</strong> (hardware real) y <strong>virtuales/compuestos</strong> (resultan de combinar varios, por ejemplo el vector de rotación).</div>
+
+<h2>3.3 Proceso de gestión de sensores</h2>
+<div class="grid">
+<div class="card"><span class="badge">1</span><h3>Habilitación</h3>
+<p>Verificar que el sensor existe en el dispositivo, declarar permisos (<code>ACCESS_FINE_LOCATION</code>, <code>ACTIVITY_RECOGNITION</code>, <code>CAMERA</code>…), solicitarlos en tiempo de ejecución y obtener el <code>SensorManager</code>.</p></div>
+<div class="card"><span class="badge">2</span><h3>Obtención</h3>
+<p>Registrar un <em>listener</em> con una frecuencia de muestreo (<code>SENSOR_DELAY_NORMAL</code>, <code>GAME</code>, <code>FASTEST</code>) y recibir los eventos en <code>onSensorChanged</code>.</p></div>
+<div class="card"><span class="badge">3</span><h3>Procesamiento</h3>
+<p>Filtrar el ruido (filtro paso bajo/alto), convertir unidades, interpretar los valores (detectar sacudida, orientación) y mostrar o almacenar el resultado.</p></div>
+<div class="card"><span class="badge">4</span><h3>Liberación</h3>
+<p>Dar de baja el listener en <code>onPause()</code> para ahorrar batería.</p></div>
+</div>
+
+<h3>Ejemplo: leer el acelerómetro en Android (Kotlin)</h3>
+<div class="code-wrap"><pre><code class="kotlin">class MainActivity : AppCompatActivity(), SensorEventListener {
+    private lateinit var sensorManager: SensorManager
+    private var acelerometro: Sensor? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // 1. HABILITACIÓN: obtener el servicio y comprobar que existe el sensor
+        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+        acelerometro = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        if (acelerometro == null) Toast.makeText(this, "Sin acelerómetro", Toast.LENGTH_SHORT).show()
+    }
+
+    // 2. OBTENCIÓN: registrar listener
+    override fun onResume() {
+        super.onResume()
+        acelerometro?.also { sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL) }
+    }
+
+    // 4. LIBERACIÓN
+    override fun onPause() {
+        super.onPause()
+        sensorManager.unregisterListener(this)
+    }
+
+    // 3. PROCESAMIENTO
+    override fun onSensorChanged(e: SensorEvent) {
+        val x = e.values[0]; val y = e.values[1]; val z = e.values[2]
+        val magnitud = Math.sqrt((x*x + y*y + z*z).toDouble())
+        if (magnitud &gt; 15) Log.d("SENSOR", "¡Sacudida detectada!")
+    }
+
+    override fun onAccuracyChanged(s: Sensor?, accuracy: Int) {}
+}</code></pre></div>
+
+<h3>Ejemplo: ubicación GPS (resumen)</h3>
+<div class="code-wrap"><pre><code class="kotlin">// Manifest: &lt;uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/&gt;
+val cliente = LocationServices.getFusedLocationProviderClient(this)
+cliente.lastLocation.addOnSuccessListener { loc -&gt;
+    loc?.let { Log.d("GPS", "Lat=${it.latitude} Lon=${it.longitude}") }
+}</code></pre></div>
+<div class="note warn"><strong>Buenas prácticas:</strong> pide solo los permisos necesarios, explica al usuario para qué los usas, usa la frecuencia de muestreo más baja posible y siempre cancela el registro del sensor al salir de la pantalla.</div>
+
+<h2>3.4 Enlaces y videos recomendados</h2>
+<div class="resources"><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/develop/sensors-and-location/sensors/sensors_overview"><span class="ico">↗</span><span><strong>Información general de sensores</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/develop/sensors-and-location/sensors/sensors_motion"><span class="ico">↗</span><span><strong>Sensores de movimiento</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/develop/sensors-and-location/location"><span class="ico">↗</span><span><strong>Ubicación en Android</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.android.com/training/permissions/requesting"><span class="ico">↗</span><span><strong>Solicitar permisos en tiempo de ejecución</strong><small>developer.android.com</small></span></a><a class="res" target="_blank" rel="noopener" href="https://developer.apple.com/documentation/coremotion"><span class="ico">↗</span><span><strong>Core Motion (iOS)</strong><small>developer.apple.com</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=sensores+android+studio+aceler%C3%B3metro+kotlin+tutorial"><span class="ico">▶</span><span><strong>Sensores en Android: acelerómetro</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=gps+ubicaci%C3%B3n+android+studio+kotlin+tutorial+espa%C3%B1ol"><span class="ico">▶</span><span><strong>GPS y ubicación en Android</strong><small>Buscar en YouTube</small></span></a><a class="res yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=sensor+manager+android+giroscopio+proximidad+luz"><span class="ico">▶</span><span><strong>SensorManager: luz, proximidad, giroscopio</strong><small>Buscar en YouTube</small></span></a></div>
+
+    <div class="pager"><a href="02-persistencia-datos.html">← 2. Persistencia y acceso a datos</a><a href="04-multimedia.html">4. Recursos multimedia →</a></div>
+  </main>
+</div>
+<footer>Actividad 12/11/2026 · Tutorial de desarrollo de aplicaciones móviles</footer>
+<button id="toTop" aria-label="Volver arriba">↑</button>
+<script src="../js/main.js"></script>
+</body>
+</html>
